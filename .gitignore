@@ -1,0 +1,4 @@
+weights/*
+kaggle_3m/*
+lgg-mri-segmentation/*
+__pycache__/*
