@@ -6,7 +6,7 @@ class UnetBlock(nn.Module):
     def __init__(self, in_channels, out_channels):
         super().__init__()
         self.conv_block = nn.Sequential(
-            nn.Conv2d(in_channels, out_channels, kernel_size=3, padding=1, biass=False),
+            nn.Conv2d(in_channels, out_channels, kernel_size=3, padding=1, bias=False),
             nn.BatchNorm2d(out_channels),
             nn.ReLU(inplace=True),
             nn.Conv2d(out_channels, out_channels, kernel_size=3, padding=1, bias=False),
@@ -52,6 +52,7 @@ class Unet(nn.Module):
         self.dec_2 = Decoder(features * 8, features * 4)
         self.dec_3 = Decoder(features * 4, features * 2)
         self.dec_4 = Decoder(features * 2, features)
+        self.last_layer = nn.Conv2d(features, out_channels, kernel_size=1)
 
     def forward(self, x):
         enc1 = self.enc_1(x)
@@ -65,6 +66,7 @@ class Unet(nn.Module):
         x= self.dec_2(x, enc3)
         x= self.dec_3(x, enc2)
         x= self.dec_4(x, enc1)
+        x= torch.sigmoid(self.last_layer(x))
         return x
 
 

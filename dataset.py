@@ -68,7 +68,7 @@ class BrainSegmentationDataset(Dataset):
         ]
         self.volumes = [(v, m[..., None]) for v, m in self.volumes]
         num_slices = [v.shape[0] for v, _ in self.volumes]
-        self.patent_slice_index = list(
+        self.patient_slice_index = list(
             zip(
                 sum([[i] * num_slices[i] for i in range(len(num_slices))], []),
                 sum([list(range(x)) for x in num_slices], []),
@@ -77,11 +77,11 @@ class BrainSegmentationDataset(Dataset):
         self.random_sampling = random_sampling
         self.transform = transform
     def __len__(self):
-        return len(self.patent_slice_index)
+        return len(self.patient_slice_index)
     
     def __getitem__(self, idx):
-        patient = self.patent_slice_index[idx][0]
-        slice_n = self.patent_slice_index[idx][1]
+        patient = self.patient_slice_index[idx][0]
+        slice_n = self.patient_slice_index[idx][1]
         if self.random_sampling:
             patient = np.random.randint(len(self.volumes))
             slice_n = np.random.choice(

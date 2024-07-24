@@ -184,7 +184,7 @@ if __name__ == "__main__":
     parser.add_argument(
         "--workers",
         type=int,
-        default=4,
+        default=0,
         help="number of workers for data loading (default: 4)",
     )
     parser.add_argument(
